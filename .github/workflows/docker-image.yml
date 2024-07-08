@@ -29,24 +29,28 @@ jobs:
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD}}
-        NEW_VERSION: ${{ steps.version.outputs.version }}
+       
       run: |
         echo "Iniciando login"
         docker login  -u $DOCKER_USER -p $DOCKER_PASSWORD
         echo "Login inicializado correctamente"
-        echo "New version: $NEW_VERSION !!"
-#    - name: Build Docker Image
-#      run: | 
-#        echo "building image"
-#        docker build -t antonio117/docker-graphql:0.0.2 .
-#        docker build -t antonio117/docker-graphql:latest .
-#        echo "image builded succesfully"
-#    - name: Push Docker image
-#      run: | 
-#        echo "Pushing image to registry"
-#        docker push antonio117/docker-graphql:0.0.2
-#        docker push antonio117/docker-graphql:latest
-#        echo "Image pushed correctly"
-#    - name: Build the Docker image
-#      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+       
+    - name: Build Docker Image
+      env:
+       NEW_VERSION: ${{ steps.version.outputs.version }}
+      run: | 
+        echo "building image"
+        docker build -t antonio117/docker-graphql:$NEW_VERSION .
+        docker build -t antonio117/docker-graphql:latest .
+        echo "image builded succesfully"
+    - name: Push Docker image
+      env:
+       NEW_VERSION: ${{ steps.version.outputs.version }}
+      run: | 
+        echo "Pushing image to registry"
+        docker push antonio117/docker-graphql:$NEW_VERSION
+        docker push antonio117/docker-graphql:latest
+        echo "Image pushed correctly"
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
   
