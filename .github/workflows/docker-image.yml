@@ -29,11 +29,13 @@ jobs:
       run: | 
         echo "building image"
         docker build -t antonio117/docker-graphql:0.0.2 .
+        docker build -t antonio117/docker-graphql:latest .
         echo "image builded succesfully"
     - name: Push Docker image
       run: | 
         echo "Pushing image to registry"
         docker push antonio117/docker-graphql:0.0.2
+        docker push antonio117/docker-graphql:latest
         echo "Image pushed correctly"
 #    - name: Build the Docker image
 #      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
